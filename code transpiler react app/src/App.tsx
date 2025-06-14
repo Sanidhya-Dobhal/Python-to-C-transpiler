@@ -25,7 +25,7 @@ function App() {
     targetLang: string
   ) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/transpile", {
+      const response = await axios.post("https://python-to-c-transpiler-backend.onrender.com/api/transpile", {
         sourceCode,
         sourceLang,
         targetLang,
