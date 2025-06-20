@@ -5,7 +5,11 @@ export function syntaxGrammarCheck(lines: string[]): string[] {
     const words = line.trim().split(/\s+/);
     let flag = false;
 
-    if (words[0] === "identifier" && words[1] === "Assign_op") {
+    if(words.length==1 && words[0]==='')
+    {
+      results.push('Valid new line');
+    }
+    else if (words[0] === "identifier" && words[1] === "Assign_op") {
       // Possible string assignment
       if (
         words.length === 5 &&
