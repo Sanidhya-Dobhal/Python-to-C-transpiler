@@ -65,8 +65,6 @@ function App() {
       }
       // return response.data.transpiledCode;
     } catch (error) {
-      console.log("herehrehr ehr we");
-      console.log("error", error);
       if (error instanceof Error) setError(error.message); //Remove in prod maybe
       return null;
     }
@@ -127,7 +125,7 @@ function App() {
           setEditorValue={setEditorValue}
           selectedLanguage={selectedLanguageTab}
         />
-        <Button onClick={onClickSubmit}>Submit</Button>
+        <Button onClick={onClickSubmit}>Transpile</Button>
       </div>
       <div>
         <LinkComponent

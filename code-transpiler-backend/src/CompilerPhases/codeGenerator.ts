@@ -93,7 +93,6 @@ function instructionGenerator(
     let doesExist = false;
     const identifier = lexemesPerCodeLine[0];
     const RHSTokens = lexemesPerCodeLine.slice(2);
-    const RHSTokenTypes = instructionsTokenType.slice(2);
     if (symbolTable) {
       doesExist = isVariableInSymbolTable(identifier);
     } else {
@@ -137,7 +136,10 @@ function instructionGenerator(
       }
       outputLine += printContent[tokenIndexNumber];
     }
-  } else if (statementType === "Invalid syntax") {
+  } else if(statementType ==="Valid new line"){
+    return "\n";
+  } 
+  else if (statementType === "Invalid syntax") {
     return { error: "Error: Invalid Syntax" };
   }
   return outputLine + ";\n";
