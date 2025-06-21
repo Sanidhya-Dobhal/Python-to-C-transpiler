@@ -45,8 +45,11 @@ export function syntaxGrammarCheck(lines: string[]): string[] {
         results.push(flag ? "Valid numeric assignment" : `Invalid syntax`);
       }
     } else if (words[0] === "print_func" && words[1] === "punctuation(") {
-      let i = 2;
       let validPrint = false;
+      if(words.length===3 && words[2]==="punctuation)"){//For "print()"
+        validPrint =true;
+      }
+      let i = 2;
       while (i < words.length) {
         if (words[i] === "identifier" || words[i] === "num_literal") {
           validPrint = true;
