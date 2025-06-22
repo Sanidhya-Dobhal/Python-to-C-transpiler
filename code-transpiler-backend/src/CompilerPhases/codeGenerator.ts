@@ -22,7 +22,7 @@ export function codeGenerator(
     if (typeof instruction !== "string") {
       return instruction;
     }
-    finalTranspiledCode += '\t'+instruction;
+    finalTranspiledCode += "\t"+instruction;
   }
 
   symbolTable = undefined; //needs to be undefined for the next code to compile
@@ -124,17 +124,37 @@ function instructionGenerator(
     outputLine += "printf(";
     let printContent = lexemesPerCodeLine.slice(2);
     let printContentTokType = instructionsTokenType.slice(2);
+    let templateString = "";
+    let printArgumentsString = "";
     for (let tokenIndex in printContent) {
       //Might need a lot of work.
       let tokenIndexNumber = Number(tokenIndex);
       if (
-        printContent[tokenIndexNumber] === '"' &&
-        printContent[tokenIndexNumber + 1] === ")"
+        printContent[tokenIndexNumber] === ")"
       ) {
-        outputLine += '\\n")';
-        break;
+          outputLine += '"'+templateString+'\\n"'+(printArgumentsString?",":"")+printArgumentsString+")";//ternary operator required for empty print()
+          break;
       }
-      outputLine += printContent[tokenIndexNumber];
+      if(printContentTokType[tokenIndex]==="string_literal")
+        templateString +="%s ";
+      if(printContentTokType[tokenIndex]==="num_literal"){//here num_literal is hardcoded as type int but can also be double
+        templateString +="%d ";
+      }
+      if(printContentTokType[tokenIndex]==="identifier")
+      {
+        let currentDatatype = getVariableDetails(printContent[tokenIndex],"datatype");
+        if(currentDatatype && typeof currentDatatype!=="string")
+        {
+          return currentDatatype;
+        }
+        else if(currentDatatype?.trim() === "string"){
+           templateString +="%s ";
+        }
+        else if(currentDatatype?.trim() === "double"){
+          templateString+="%f ";
+        }
+      }
+      printArgumentsString += printContent[tokenIndexNumber];
     }
   } else if(statementType ==="Valid new line"){
     return "\n";
@@ -158,17 +178,17 @@ function isVariableInSymbolTable(identifier: string) {
   return doesExist;
 }
 
-function getVariableInC(identifier: string) {
+function getVariableDetails(identifier: string,detail:"cVariable"|"datatype") {
   if (isVariableInSymbolTable(identifier)) {
     if (!symbolTable) {
-      return { error: "Problem on our side: symboltable not present" };
+      return { error: "Problem on our side: Symboltable not present" };
     }
     for (let entry of symbolTable) {
       if (entry?.name === identifier) {
-        return entry.cVariable;
+        return entry[detail];
       }
     }
   } else {
-    return { error: "Invalid variable" };
+    return { error: `Invalid variable: ${identifier}` };
   }
 }
