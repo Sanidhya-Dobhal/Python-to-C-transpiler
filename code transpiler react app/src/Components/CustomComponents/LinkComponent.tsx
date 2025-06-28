@@ -17,7 +17,6 @@ export default function LinkComponent({
         <Link href={file} download={downloadName}>
           {anchorText}
         </Link>
-        <br></br>
       </>
     )
   );
