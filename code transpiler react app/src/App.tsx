@@ -1,7 +1,9 @@
 import { useState } from "react";
 import EditorComponent from "./Components/EditorComponent";
 import axios from "axios";
-import { Button, Tabs, Tab, Box } from "@mui/material";
+import './App.css';
+import { Button, Tabs, Tab, Box, Accordion, AccordionSummary } from "@mui/material";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LinkComponent from "./Components/CustomComponents/LinkComponent";
 
 function App() {
@@ -83,6 +85,17 @@ function App() {
       await transpileCode(pythonCode, "python", "c");
     }
   }
+
+  function downloadFinalCode(){
+     const link = document.createElement("a");
+    link.href = finalCCode;
+    link.download = "Equivalent C Code.c";
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+  
   function handleLanguageChange(event: any) {
     if (event.target.textContent !== selectedLanguageTab) {
       if (event.target.textContent === "C") {
@@ -125,9 +138,15 @@ function App() {
           setEditorValue={setEditorValue}
           selectedLanguage={selectedLanguageTab}
         />
-        <Button onClick={onClickSubmit}>Transpile</Button>
+        <Button variant = "contained"onClick={onClickSubmit} style = {{marginTop:8}}>Transpile</Button>
       </div>
-      <div>
+      <div style ={{width:'100%',marginTop:48}}>
+      <div style = {{display:finalCCode?'block':'none',marginRight: 32, marginLeft:32}}>
+        <Button variant="outlined" onClick ={downloadFinalCode} fullWidth>Download C Code</Button>
+        <Accordion style={{marginTop:16}}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <b style = {{color: 'rgb(0, 82, 165)'}}>Supporting files</b>
+            </AccordionSummary>
         <LinkComponent
           file={codeWithoutComm}
           downloadName="CodeWithoutComments.py"
@@ -153,14 +172,11 @@ function App() {
           downloadName="StatementCategory.txt"
           anchorText="Download statement categories file"
         />
-        <LinkComponent
-          file={finalCCode}
-          downloadName="Equivalent C Code.c"
-          anchorText="Download Equivalent C Code"
-        />
+        </Accordion>
+        </div>
         {error && (
           <div>
-            <p style={{ color: "red", margin: "0 16px" }}>{error}</p>
+            <p style={{ color: "red", margin: "0" , textAlign:"center"}} >{error}</p>
           </div>
         )}
       </div>

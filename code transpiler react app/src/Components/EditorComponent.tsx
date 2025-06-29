@@ -1,4 +1,4 @@
-import Editor from "@monaco-editor/react";
+import RawEditor from "@monaco-editor/react";
 export default function EditorComponent({
   editorValue,
   setEditorValue,
@@ -8,14 +8,19 @@ export default function EditorComponent({
   setEditorValue: React.Dispatch<React.SetStateAction<string>>;
   selectedLanguage: "C"|"python"
 }) {
-  function editorChangeHandler(value: string) {
+  const Editor = RawEditor as unknown as React.FC<any>;
+  function editorChangeHandler(value: string|undefined) {
+    if(value){
     setEditorValue(value);
+  }
+  else{
+    setEditorValue("");
+  }
   }
   return (
     <div style={{ border: "2px solid #7f7f7f", minHeight: 300, width: "80vw" }}>
       <Editor
         height="87vh"
-        border
         language = {selectedLanguage.toLowerCase()}
         value={editorValue}
         onChange={editorChangeHandler}
