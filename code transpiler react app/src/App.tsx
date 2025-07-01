@@ -5,6 +5,7 @@ import './App.css';
 import { Button, Tabs, Tab, Box, Accordion, AccordionSummary } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LinkComponent from "./Components/CustomComponents/LinkComponent";
+import InfoToolTipComponent from "./Components/InfoToolTipComponent";
 
 function App() {
   const [codeWithoutComm, setcodeWithoutComm] = useState<string>();
@@ -115,7 +116,8 @@ function App() {
     }
   }
   const [editorValue, setEditorValue] = useState('print("Hello World")');
-  return (
+  return (<>
+    <h1 style = {{marginTop:32, marginBottom: 8}}>Python to C Transpiler</h1>
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -138,14 +140,17 @@ function App() {
           setEditorValue={setEditorValue}
           selectedLanguage={selectedLanguageTab}
         />
-        <Button variant = "contained"onClick={onClickSubmit} style = {{marginTop:8}}>Transpile</Button>
+        <div style = {{display:'flex',flexDirection:'row',marginTop:8,gap:8}}>
+        <Button variant = "contained"onClick={onClickSubmit}>Transpile</Button>
+        {finalCCode && <Button variant="outlined" onClick ={downloadFinalCode}>Download C Code</Button>}
+        </div>
       </div>
       <div style ={{width:'100%',marginTop:48}}>
       <div style = {{display:finalCCode?'block':'none',marginRight: 32, marginLeft:32}}>
-        <Button variant="outlined" onClick ={downloadFinalCode} fullWidth>Download C Code</Button>
-        <Accordion style={{marginTop:16}}>
+        <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <b style = {{color: 'rgb(0, 82, 165)'}}>Supporting files</b>
+            <InfoToolTipComponent  title= "Intermediate output files generated during transpilation to help better understand and debug each compilation phase" placement= "top" />
             </AccordionSummary>
         <LinkComponent
           file={codeWithoutComm}
@@ -181,6 +186,7 @@ function App() {
         )}
       </div>
     </div>
+    </>
   );
 }
 
