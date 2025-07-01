@@ -18,9 +18,9 @@ export default function EditorComponent({
   }
   }
   return (
-    <div style={{ border: "2px solid #7f7f7f", minHeight: 300, width: "80vw" }}>
+    <div style={{ border: "2px solid #7f7f7f", minHeight: 300, width: "76vw" }}>
       <Editor
-        height="87vh"
+        height="78vh"
         language = {selectedLanguage.toLowerCase()}
         value={editorValue}
         onChange={editorChangeHandler}
