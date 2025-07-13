@@ -20,7 +20,6 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Define the expected request body shape
 interface TranspileRequest {
   sourceCode: string;
   sourceLang: string;
@@ -40,7 +39,6 @@ app.post(
       const lexicalOutputString = lexicalOutputForFile(lexemesPerCodeLine);
       const tokenList = tokenClassifier(lexemesPerCodeLine);
       const tokenListOutputString = tokenListOutputForFile(tokenList);
-      // const symbolTable = generateSymbolTableFromTokens(tokenList);
       const simplifiedTokenRep = simplifyTokensForSyntaxEvaluation(tokenList);
       const simplifiedTokenRepString =
         oneDStrArrayToMultilineStr(simplifiedTokenRep);
@@ -48,8 +46,6 @@ app.post(
       const statementValidityString =
         oneDStrArrayToMultilineStr(statementValidity);
       console.log(statementValidity);
-      // console.log("symbol table is ", symbolTable);
-      // console.log(lexicalOutputString);
       const finalCode = codeGenerator(
         statementValidity,
         lexemesPerCodeLine,
