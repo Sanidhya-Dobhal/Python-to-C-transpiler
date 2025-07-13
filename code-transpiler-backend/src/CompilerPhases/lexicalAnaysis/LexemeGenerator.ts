@@ -38,9 +38,13 @@ export function lexemeGenerator(
       appendLex();
       const nextCh = inputCode[index + 1] ?? "";
       if (["=", "!", "<", ">"].includes(ch)) {
-        const [relOp, isTwoCharRelOp] = completeRelationalToken(ch, nextCh);
-        output.push(relOp);
-        index += isTwoCharRelOp ? 1 : 0;
+        if(nextCh === "=") {
+          output.push(ch + nextCh);
+          index+=1;
+        }
+        else {
+          output.push(ch);
+        }
       } else {
         output.push(ch);
         console.log("output is", output);
@@ -109,19 +113,4 @@ export function lexemeGenerator(
 function isPunct(ch: string): boolean {
   const punctuations = `!#$%&'()*+,-/:;<=>?@[\\]^_\`{|}~`;
   return punctuations.includes(ch);
-}
-function completeRelationalToken(
-  ch: string,
-  nextCh: string
-): [string, boolean] {
-  if (
-    (ch === "=" && nextCh === "=") ||
-    (ch === "!" && nextCh === "=") ||
-    (ch === "<" && nextCh === "=") ||
-    (ch === ">" && nextCh === "=")
-  ) {
-    return [ch + nextCh, true];
-  } else {
-    return [ch, false];
-  }
 }

@@ -68,8 +68,6 @@ export function tokenClassifier(lexemeLines: string[][]): TokenInfo[][] {
             tokenType = "Arth_operator";
             break;
           case "<":
-            tokenType = "rel_op";
-            break;
           case ">":
             tokenType = "rel_op";
             break;
@@ -82,7 +80,6 @@ export function tokenClassifier(lexemeLines: string[][]): TokenInfo[][] {
             break;
           default:
             tokenType = "punctuation" + token;
-            break;
         }
       } else if (token.length === 2 && isPunctuation(token[0])) {
         if (["<=", ">=", "==", "!="].includes(token)) {

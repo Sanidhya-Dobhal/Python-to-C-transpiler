@@ -2,15 +2,14 @@ import { useState } from "react";
 import EditorComponent from "./Components/EditorComponent";
 import axios from "axios";
 import './App.css';
-import { Button, Tabs, Tab, Box, Accordion, AccordionSummary } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Button, Tabs, Tab, Box, Accordion,} from "@mui/material";
 import LinkComponent from "./Components/CustomComponents/LinkComponent";
-import InfoToolTipComponent from "./Components/InfoToolTipComponent";
+import AccordionSummaryComponent from "./Components/AccordionSummaryComponent";
 
 function App() {
-  const [codeWithoutComm, setcodeWithoutComm] = useState<string>();
-  const [lexemesFile, setLexemesFile] = useState<string>();
-  const [tokenList, setTokenList] = useState<string>();
+  const [codeWithoutComm, setcodeWithoutComm] = useState<string>("");
+  const [lexemesFile, setLexemesFile] = useState<string>("");
+  const [tokenList, setTokenList] = useState<string>("");
   const [simplifiedTokenRep, setSimplifiedTokenListRep] = useState<string>("");
   const [statementValidity, setStatementValidity] = useState<string>("");
   const [finalCCode, setFinalCCode] = useState<string>("");
@@ -22,6 +21,11 @@ function App() {
   >("python");
 
   const [error, setError] = useState<string>();
+    function createFileURLFromText(fileContent:any,setterFunction:React.Dispatch<React.SetStateAction<string>>){
+    let file = new Blob([fileContent],{ type: "text/plain" });
+    setterFunction(URL.createObjectURL(file));
+
+  }
   const transpileCode = async (
     sourceCode: string,
     sourceLang: string,
@@ -36,31 +40,13 @@ function App() {
       if (response.data.error) {
         setError(response.data.error);
       } else {
-        const files = response.data.files;
-        const blob1 = new Blob([files[0]], { type: "text/plain" });
-        const blob2 = new Blob([files[1]], { type: "text/plain" });
-        const tokenListBlob = new Blob([files[2]], { type: "text/plain" });
-        const simplifiedTokenRepBlob = new Blob([files[3]], {
-          type: "text/plain",
-        });
-        const statementValidityBlob = new Blob([files[4]], {
-          type: "text/plain",
-        });
-        const finalCCodeBlob = new Blob([files[5]], { type: "text/plain" });
-        const url = URL.createObjectURL(blob1);
-        const url2 = URL.createObjectURL(blob2);
-        const tokenListUrl = URL.createObjectURL(tokenListBlob);
-        const simplifiedTokenRepUrl = URL.createObjectURL(
-          simplifiedTokenRepBlob
-        );
-        const statementValidityUrl = URL.createObjectURL(statementValidityBlob);
-        const finalCCodeUrl = URL.createObjectURL(finalCCodeBlob);
-        setcodeWithoutComm(url);
-        setLexemesFile(url2);
-        setTokenList(tokenListUrl);
-        setSimplifiedTokenListRep(simplifiedTokenRepUrl);
-        setStatementValidity(statementValidityUrl);
-        setFinalCCode(finalCCodeUrl);
+        const files:string[] = response.data.files;
+        createFileURLFromText(files[0], setcodeWithoutComm);
+        createFileURLFromText(files[1],setLexemesFile);
+        createFileURLFromText(files[2],setTokenList);
+        createFileURLFromText(files[3],setSimplifiedTokenListRep);
+        createFileURLFromText(files[4],setStatementValidity)
+        createFileURLFromText(files[5],setFinalCCode);
         if (selectedLanguageTab === "python") setPythonCode(editorValue);
         setSelectedLanguageTab("C");
         setEditorValue(files[5]);
@@ -148,10 +134,7 @@ function App() {
       <div style ={{width:'100%',marginTop:48}}>
       <div style = {{display:finalCCode?'block':'none',marginRight: 32, marginLeft:32}}>
         <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <b style = {{color: 'rgb(0, 82, 165)'}}>Supporting files</b>
-            <InfoToolTipComponent  title= "Intermediate output files generated during transpilation to help better understand and debug each compilation phase" placement= "top" />
-            </AccordionSummary>
+          <AccordionSummaryComponent title = "Supporting files" toolTipContent = "Intermediate output files generated during transpilation to help better understand and debug each compilation phase" toolTipPlacement="top"/>
         <LinkComponent
           file={codeWithoutComm}
           downloadName="CodeWithoutComments.py"
