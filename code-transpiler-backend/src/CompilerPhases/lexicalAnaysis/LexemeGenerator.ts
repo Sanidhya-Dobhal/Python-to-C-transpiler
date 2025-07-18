@@ -23,16 +23,21 @@ export function lexemeGenerator(
       appendLex(); // Flush previous token
       output.push('"');
       index++;
-      while (index < inputCode.length && inputCode[index] !== '"') {
+      let hasStringTerminated = false
+      while (index < inputCode.length && inputCode[index] !== '"' && inputCode[index]!='\n') {
         lex += inputCode[index];
         index++;
+      }
+      if(inputCode[index]==='"'){
+        hasStringTerminated = true;
+      }
+      else{
+        return {error: "SyntaxError: Unterminated string detected in lexical analysis"}
       }
       output.push(lex);
       console.log(lex);
       lex = "";
-      //   i = 0;
       output.push('"');
-      //   console.log('"');
       //   index++;
     } else if (isPunct(ch)) {
       appendLex();
@@ -50,7 +55,6 @@ export function lexemeGenerator(
         console.log("output is", output);
       }
     } else if (ch === ".") {
-      console.log("line 48");
       //Checking if the character '.' can be part of a number or not
       if (!isNaN(Number(lex)) && lex.length > 0) {
         //Before '.'
