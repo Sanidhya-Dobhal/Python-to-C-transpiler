@@ -1,4 +1,6 @@
-export function commentRemover(sourceCode: string) {
+export function commentRemover(sourceCode: string):string | {
+    error: string;
+} {
   let output = "";
   let i = 0;
   let inString = false;
