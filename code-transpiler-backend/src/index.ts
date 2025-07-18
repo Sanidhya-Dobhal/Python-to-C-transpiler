@@ -32,6 +32,10 @@ app.post(
   (req: Request<{}, {}, TranspileRequest>, res: Response) => {
     const { sourceCode, sourceLang, targetLang } = req.body;
     const codeWithoutComments = commentRemover(sourceCode);
+    if(typeof codeWithoutComments!== 'string') {
+      res.json ({error: codeWithoutComments.error});
+    }
+    else{
     const lexemesPerCodeLine = lexemeGenerator(codeWithoutComments);
     if ("error" in lexemesPerCodeLine) {
       res.json({ error: lexemesPerCodeLine.error });
@@ -68,6 +72,7 @@ app.post(
       }
     }
   }
+}
 );
 
 app.listen(PORT, () => {

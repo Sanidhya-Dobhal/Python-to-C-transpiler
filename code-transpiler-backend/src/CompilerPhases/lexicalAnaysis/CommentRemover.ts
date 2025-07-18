@@ -1,4 +1,4 @@
-export function commentRemover(sourceCode: string): string {
+export function commentRemover(sourceCode: string) {
   let output = "";
   let i = 0;
   let inString = false;
@@ -35,18 +35,25 @@ export function commentRemover(sourceCode: string): string {
       if (c === "'" && !inString) {
         if (sourceCode[i + 1] === "'" && sourceCode[i + 2] === "'") {
           i += 3; // Skip opening '''
+          let hasCommentTerminated = false; 
           while (i < sourceCode.length) {
             if (
               sourceCode[i] === "'" &&
               sourceCode[i + 1] === "'" &&
               sourceCode[i + 2] === "'"
             ) {
+              hasCommentTerminated = true;
               i += 3; // Skip closing '''
               break;
             }
             i++;
           }
-          continue;
+          if(hasCommentTerminated){
+            continue;
+          }
+          else{
+            return {error:'SyntaxError: unterminated triple-quoted string detected'}
+          }
         } else {
           // it's just a single quote or something else, preserve it
           output += c;
