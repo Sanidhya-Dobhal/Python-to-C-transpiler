@@ -1,14 +1,14 @@
-body{
+body {
     font-family: Arial;
     margin: 0px;
     padding-left: 32px;
 }
-.MuiAccordion-region a{
+.MuiAccordion-region a {
     display:block;
     margin-bottom:4px;
     margin-left: 16px;
 }
-.MuiCollapse-wrapperInner div[role="region"]{
+.MuiCollapse-wrapperInner div[role="region"] {
     padding-bottom:16px;
 }
 .MuiAccordion-heading button span {
@@ -18,4 +18,20 @@ body{
 .MuiAccordion-heading button span:nth-child(1) svg {
     color:gray;
     height:20px;
+}
+.overlay {
+    display: flex;
+    width:100vw;
+    height:100vh;
+    align-items:center;
+    justify-content:center;
+    position:fixed;
+    background-color:rgba(0,0,0,0.5);
+    z-index:6;
+    margin-left: -32px;
+    margin-top: -32px;
+}
+
+.MuiCircularProgress-root svg{
+    color:white;
 }
