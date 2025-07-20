@@ -110,7 +110,7 @@ function App() {
   }
   const [editorValue, setEditorValue] = useState('print("Hello World")');
   return (<>
-     <LoadingOverlay loadingState = {!isCCodeLoading} delay ={'1000ms'}/>
+     <LoadingOverlay loadingState = {isCCodeLoading} delay ={'1000ms'}/>
     <h1 style = {{marginTop:32, marginBottom: 8}}>Python to C Transpiler</h1>
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div>
