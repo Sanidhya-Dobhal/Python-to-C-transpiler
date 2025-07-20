@@ -2,7 +2,7 @@ import { useState } from "react";
 import EditorComponent from "./Components/EditorComponent";
 import axios from "axios";
 import './App.css';
-import { Button, Tabs, Tab, Box, Accordion,} from "@mui/material";
+import { Button, Tabs, Tab, Box, Accordion, CircularProgress, Fade} from "@mui/material";
 import LinkComponent from "./Components/CustomComponents/LinkComponent";
 import AccordionSummaryComponent from "./Components/AccordionSummaryComponent";
 
@@ -15,6 +15,7 @@ function App() {
   const [finalCCode, setFinalCCode] = useState<string>("");
   const [pythonCode, setPythonCode] = useState<string>("");
   const [finalCCodeString, setFinalCCodeString] = useState<string>("");
+  const [isCCodeLoading, setIsCCodeLoading] = useState(false);
 
   const [selectedLanguageTab, setSelectedLanguageTab] = useState<
     "C" | "python"
@@ -32,6 +33,7 @@ function App() {
     targetLang: string
   ) => {
     try {
+      setIsCCodeLoading(true);
       const response = await axios.post("https://python-to-c-transpiler-backend.onrender.com/api/transpile", {
         sourceCode,
         sourceLang,
@@ -45,7 +47,7 @@ function App() {
         createFileURLFromText(files[1],setLexemesFile);
         createFileURLFromText(files[2],setTokenList);
         createFileURLFromText(files[3],setSimplifiedTokenListRep);
-        createFileURLFromText(files[4],setStatementValidity)
+        createFileURLFromText(files[4],setStatementValidity);
         createFileURLFromText(files[5],setFinalCCode);
         if (selectedLanguageTab === "python") setPythonCode(editorValue);
         setSelectedLanguageTab("C");
@@ -56,6 +58,9 @@ function App() {
     } catch (error) {
       if (error instanceof Error) setError(error.message); //Remove in prod maybe
       return null;
+    }
+    finally {
+       setIsCCodeLoading(false);
     }
   };
   async function onClickSubmit() {
@@ -103,6 +108,17 @@ function App() {
   }
   const [editorValue, setEditorValue] = useState('print("Hello World")');
   return (<>
+      <Fade
+          in={isCCodeLoading}
+          style={{
+            transitionDelay: isCCodeLoading ? '1000ms' : '0ms',
+          }}
+          unmountOnExit
+        >
+          <div className = "overlay">
+            <CircularProgress size = {"48px"}/>
+          </div>
+        </Fade>
     <h1 style = {{marginTop:32, marginBottom: 8}}>Python to C Transpiler</h1>
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div>
