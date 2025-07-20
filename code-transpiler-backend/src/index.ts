@@ -60,14 +60,12 @@ app.post(
         return;
       } else {
         res.json({
-          files: [
             codeWithoutComments,
             lexicalOutputString,
             tokenListOutputString,
             simplifiedTokenRepString,
             statementValidityString,
             finalCode,
-          ],
         });
       }
     }

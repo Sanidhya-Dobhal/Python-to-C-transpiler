@@ -2,9 +2,10 @@ import { useState } from "react";
 import EditorComponent from "./Components/EditorComponent";
 import axios from "axios";
 import './App.css';
-import { Button, Tabs, Tab, Box, Accordion, CircularProgress, Fade} from "@mui/material";
-import LinkComponent from "./Components/CustomComponents/LinkComponent";
+import { Button, Tabs, Tab, Box, Accordion,} from "@mui/material";
+import LinkComponent from "./Components/CommonComponents/LinkComponent";
 import AccordionSummaryComponent from "./Components/AccordionSummaryComponent";
+import LoadingOverlay from "./Components/CommonComponents/LoadingOverlay/LoadingOverlay";
 
 function App() {
   const [codeWithoutComm, setcodeWithoutComm] = useState<string>("");
@@ -40,21 +41,22 @@ function App() {
         targetLang,
       });
       if (response.data.error) {
-        setError(response.data.error);
+        setError(response.data.error); 
       } else {
-        const files:string[] = response.data.files;
-        createFileURLFromText(files[0], setcodeWithoutComm);
-        createFileURLFromText(files[1],setLexemesFile);
-        createFileURLFromText(files[2],setTokenList);
-        createFileURLFromText(files[3],setSimplifiedTokenListRep);
-        createFileURLFromText(files[4],setStatementValidity);
-        createFileURLFromText(files[5],setFinalCCode);
-        if (selectedLanguageTab === "python") setPythonCode(editorValue);
+        const files = response.data;
+        createFileURLFromText(files.codeWithoutComments, setcodeWithoutComm);
+        createFileURLFromText(files.lexicalOutputString,setLexemesFile);
+        createFileURLFromText(files.tokenListOutputString,setTokenList);
+        createFileURLFromText(files.simplifidTokenRepString,setSimplifiedTokenListRep);
+        createFileURLFromText(files.statementValidityString,setStatementValidity);
+        createFileURLFromText(files.finalCode,setFinalCCode);
+        if (selectedLanguageTab === "python") {
+          setPythonCode(editorValue);
+        }
         setSelectedLanguageTab("C");
-        setEditorValue(files[5]);
-        setFinalCCodeString(files[5]);
+        setEditorValue(files.finalCode);
+        setFinalCCodeString(files.finalCode);
       }
-      // return response.data.transpiledCode;
     } catch (error) {
       if (error instanceof Error) setError(error.message); //Remove in prod maybe
       return null;
@@ -108,17 +110,7 @@ function App() {
   }
   const [editorValue, setEditorValue] = useState('print("Hello World")');
   return (<>
-      <Fade
-          in={isCCodeLoading}
-          style={{
-            transitionDelay: isCCodeLoading ? '1000ms' : '0ms',
-          }}
-          unmountOnExit
-        >
-          <div className = "overlay">
-            <CircularProgress size = {"48px"}/>
-          </div>
-        </Fade>
+     <LoadingOverlay loadingState = {!isCCodeLoading} delay ={'1000ms'}/>
     <h1 style = {{marginTop:32, marginBottom: 8}}>Python to C Transpiler</h1>
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div>

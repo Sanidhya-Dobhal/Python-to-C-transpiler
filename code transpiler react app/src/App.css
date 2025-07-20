@@ -19,19 +19,3 @@ body {
     color:gray;
     height:20px;
 }
-.overlay {
-    display: flex;
-    width:100vw;
-    height:100vh;
-    align-items:center;
-    justify-content:center;
-    position:fixed;
-    background-color:rgba(0,0,0,0.5);
-    z-index:6;
-    margin-left: -32px;
-    margin-top: -32px;
-}
-
-.MuiCircularProgress-root svg{
-    color:white;
-}
