@@ -5,7 +5,7 @@ import './App.css';
 import { Button, Tabs, Tab, Box, Accordion,} from "@mui/material";
 import LinkComponent from "./Components/CommonComponents/LinkComponent";
 import AccordionSummaryComponent from "./Components/AccordionSummaryComponent";
-import LoadingOverlay from "./Components/CommonComponents/LoadingOverlay/LoadingOverlay";
+import LoadingOverlayComponent from "./Components/CommonComponents/LoadingOverlayComponent/LoadingOverlayComponent";
 
 function App() {
   const [codeWithoutComm, setcodeWithoutComm] = useState<string>("");
@@ -110,11 +110,11 @@ function App() {
   }
   const [editorValue, setEditorValue] = useState('print("Hello World")');
   return (<>
-     <LoadingOverlay loadingState = {isCCodeLoading} delay ={'1000ms'}/>
+     <LoadingOverlayComponent loadingState = {isCCodeLoading} delay ={'1000ms'}/>
     <h1 style = {{marginTop:32, marginBottom: 8}}>Python to C Transpiler</h1>
-    <div style={{ display: "flex", flexDirection: "row" }}>
+    <main>
       <div>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider", width: "fit-content" }}>
           <Tabs
             value={selectedLanguageTab}
             onChange={handleLanguageChange}
@@ -140,7 +140,7 @@ function App() {
         </div>
       </div>
       <div style ={{width:'100%',marginTop:48}}>
-      <div style = {{display:finalCCode?'block':'none',marginRight: 32, marginLeft:32}}>
+      {finalCCode && <div className ="accordion">
         <Accordion>
           <AccordionSummaryComponent title = "Supporting files" toolTipContent = "Intermediate output files generated during transpilation to help better understand and debug each compilation phase" toolTipPlacement="top"/>
         <LinkComponent
@@ -169,14 +169,14 @@ function App() {
           anchorText="Download statement categories file"
         />
         </Accordion>
-        </div>
+        </div>}
         {error && (
           <div>
             <p style={{ color: "red", margin: "0" , textAlign:"center"}} >{error}</p>
           </div>
         )}
       </div>
-    </div>
+    </main>
     </>
   );
 }
