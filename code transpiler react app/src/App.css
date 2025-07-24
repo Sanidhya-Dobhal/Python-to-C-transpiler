@@ -2,20 +2,68 @@ body {
     font-family: Arial;
     margin: 0px;
     padding-left: 32px;
+    padding-right: 0px;
 }
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+
 .MuiAccordion-region a {
     display:block;
     margin-bottom:4px;
     margin-left: 16px;
 }
+
 .MuiCollapse-wrapperInner div[role="region"] {
     padding-bottom:16px;
 }
+
 .MuiAccordion-heading button span {
     align-items:center;
     justify-content: space-between;
 }
-.MuiAccordion-heading button span:nth-child(1) svg {
-    color:gray;
-    height:20px;
+
+.editor {
+    border: 2px solid #7f7f7f;
+    min-height: 300px;
+    width: 76vw;
+}
+
+.accordion {
+    margin:auto 32px;
+}
+@media screen and (max-width: 1173px){
+    .editor{
+        width:74vw;
+    }
+}
+
+@media screen and (max-width: 1082px){
+    .editor{
+        width:72.5vw;
+    }
+}
+
+@media screen and (max-width: 1024px){
+    main {
+        flex-direction: column;
+    }
+    .editor {
+        width: 100%;
+    }
+    body {
+        padding-right:32px;
+    }
+    .accordion {
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 496px) {
+    body { 
+       padding-left: 16px; 
+       padding-right: 16px; 
+    } 
 }

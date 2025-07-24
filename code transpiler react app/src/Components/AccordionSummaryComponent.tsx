@@ -1,6 +1,6 @@
 import { AccordionSummary, PopperProps } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import InfoToolTipComponent from "./InfoToolTipComponent";
+import InfoToolTipComponent from "./CommonComponents/InfoToolTipComponent";
 
 export default function AccordionSummaryComponent({title, toolTipContent, toolTipPlacement}:{title:string, toolTipContent:string, toolTipPlacement:PopperProps['placement']|undefined}) {
   return (
