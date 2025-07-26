@@ -1,18 +1,19 @@
-interface SymbolEntry {
+export interface SymbolEntry {
   name: string;
   type?: string;
   value?: string;
   cVariable: string;
   datatype: string;
 }
-let symbolTable: SymbolEntry[] | undefined;
+let symbolTable: SymbolEntry[] = [];
 export function codeGenerator(
   statementValidity: string[],
   lexemesPerCodeLine: string[][],
   simplifiedTokenRep: string[]
-) {
+){
   let finalTranspiledCode = `#include <stdio.h>\nint main(){
   `;
+  symbolTable = []; //resetting for the next code to compile
   for (let i in statementValidity) {
     let instruction = instructionGenerator(
       statementValidity[i],
@@ -24,9 +25,10 @@ export function codeGenerator(
     }
     finalTranspiledCode += "\t"+instruction;
   }
-
-  symbolTable = undefined; //needs to be undefined for the next code to compile
-  return finalTranspiledCode + "\n\treturn 0;\n}\n";
+  return {
+    code: finalTranspiledCode + "\n\treturn 0;\n}\n", 
+    symbolTable: symbolTable
+  };
 }
 
 function instructionGenerator(
@@ -35,12 +37,12 @@ function instructionGenerator(
   instructionsTokenType: string[]
 ) {
   let outputLine = "";
-  if (statementType === "Valid numeric assignment") {
+  if (statementType === "✅ Numeric assignment") {
     let doesExist = false;
     const identifier = lexemesPerCodeLine[0];
     const RHSTokens = lexemesPerCodeLine.slice(2);
     const RHSTokenTypes = instructionsTokenType.slice(2);
-    if (symbolTable) {
+    if (symbolTable.length) {
       doesExist = isVariableInSymbolTable(identifier);
     } else {
       symbolTable = [
@@ -89,18 +91,18 @@ function instructionGenerator(
         outputLine += RHSTokens[i];
       }
     }
-  } else if (statementType === "Valid string assignment") {
+  } else if (statementType === "✅ String assignment") {
     let doesExist = false;
     const identifier = lexemesPerCodeLine[0];
     const RHSTokens = lexemesPerCodeLine.slice(2);
-    if (symbolTable) {
+    if (symbolTable.length) {
       doesExist = isVariableInSymbolTable(identifier);
     } else {
       symbolTable = [
         {
           name: identifier,
-          datatype: "String ",
-          type: "String_id",
+          datatype: "string ",
+          type: "string_id",
           cVariable: identifier,
         },
       ];
@@ -112,7 +114,7 @@ function instructionGenerator(
       symbolTable.push({
         name: identifier,
         datatype: "string ",
-        type: "strin_id",
+        type: "string_id",
         cVariable: identifier,
       });
     }
@@ -120,7 +122,7 @@ function instructionGenerator(
     for (let tokenIndex in RHSTokens) {
       outputLine += RHSTokens[tokenIndex];
     }
-  } else if (statementType === "Valid print statement") {
+  } else if (statementType === "✅ Print statement") {
     outputLine += "printf(";
     let printContent = lexemesPerCodeLine.slice(2);
     let printContentTokType = instructionsTokenType.slice(2);
@@ -156,10 +158,10 @@ function instructionGenerator(
       }
       printArgumentsString += printContent[tokenIndexNumber];
     }
-  } else if(statementType ==="Valid new line"){
+  } else if(statementType ==="✅ New line"){
     return "\n";
   } 
-  else if (statementType === "Invalid syntax") {
+  else if (statementType === "❌ Invalid syntax") {
     return { error: "Error: Invalid Syntax" };
   }
   return outputLine + ";\n";
@@ -167,9 +169,6 @@ function instructionGenerator(
 
 function isVariableInSymbolTable(identifier: string) {
   let doesExist = false;
-  if (!symbolTable) {
-    return false;
-  }
   for (let entry of symbolTable) {
     if (entry?.name === identifier) {
       doesExist = true;
@@ -180,9 +179,6 @@ function isVariableInSymbolTable(identifier: string) {
 
 function getVariableDetails(identifier: string,detail:"cVariable"|"datatype") {
   if (isVariableInSymbolTable(identifier)) {
-    if (!symbolTable) {
-      return { error: "Problem on our side: Symboltable not present" };
-    }
     for (let entry of symbolTable) {
       if (entry?.name === identifier) {
         return entry[detail];
