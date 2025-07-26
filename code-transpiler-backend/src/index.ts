@@ -6,6 +6,7 @@ import { lexemeGenerator } from "./CompilerPhases/lexicalAnaysis/LexemeGenerator
 import {
   lexicalOutputForFile,
   oneDStrArrayToMultilineStr,
+  symbolTableForFile,
   tokenListOutputForFile,
 } from "./OutputFilesGenerator";
 import { tokenClassifier } from "./CompilerPhases/lexicalAnaysis/tokenClassifier";
@@ -45,27 +46,29 @@ app.post(
       const tokenListOutputString = tokenListOutputForFile(tokenList);
       const simplifiedTokenRep = simplifyTokensForSyntaxEvaluation(tokenList);
       const simplifiedTokenRepString =
-        oneDStrArrayToMultilineStr(simplifiedTokenRep);
+        "Simplified Token Representation of the python source code\n----------------------------------------------------------\n"+oneDStrArrayToMultilineStr(simplifiedTokenRep);
       const statementValidity = syntaxGrammarCheck(simplifiedTokenRep);
-      const statementValidityString =
+      const statementValidityString ="Type of the statements in the source code\n-----------------------------------------\n\n"+
         oneDStrArrayToMultilineStr(statementValidity);
       console.log(statementValidity);
-      const finalCode = codeGenerator(
+      const codeGenerationOutput = codeGenerator(
         statementValidity,
         lexemesPerCodeLine,
         simplifiedTokenRep
       );
-      if (typeof finalCode !== "string") {
-        res.json({ error: finalCode.error });
+      if ("error" in codeGenerationOutput) {
+        res.json({ error: codeGenerationOutput.error });
         return;
       } else {
+        const symbolTableString = symbolTableForFile(codeGenerationOutput.symbolTable);
         res.json({
             codeWithoutComments,
             lexicalOutputString,
             tokenListOutputString,
             simplifiedTokenRepString,
             statementValidityString,
-            finalCode,
+            symbolTableString,
+            finalCode: codeGenerationOutput.code,
         });
       }
     }

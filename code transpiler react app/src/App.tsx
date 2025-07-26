@@ -15,6 +15,7 @@ function App() {
   const [statementValidity, setStatementValidity] = useState<string>("");
   const [finalCCode, setFinalCCode] = useState<string>("");
   const [pythonCode, setPythonCode] = useState<string>("");
+  const [symbolTable, setSymbolTable] = useState<string>("");
   const [finalCCodeString, setFinalCCodeString] = useState<string>("");
   const [isCCodeLoading, setIsCCodeLoading] = useState(false);
 
@@ -28,6 +29,7 @@ function App() {
     setterFunction(URL.createObjectURL(file));
 
   }
+
   const transpileCode = async (
     sourceCode: string,
     sourceLang: string,
@@ -47,8 +49,9 @@ function App() {
         createFileURLFromText(files.codeWithoutComments, setcodeWithoutComm);
         createFileURLFromText(files.lexicalOutputString,setLexemesFile);
         createFileURLFromText(files.tokenListOutputString,setTokenList);
-        createFileURLFromText(files.simplifidTokenRepString,setSimplifiedTokenListRep);
+        createFileURLFromText(files.simplifiedTokenRepString,setSimplifiedTokenListRep);
         createFileURLFromText(files.statementValidityString,setStatementValidity);
+        createFileURLFromText(files.symbolTableString,setSymbolTable);
         createFileURLFromText(files.finalCode,setFinalCCode);
         if (selectedLanguageTab === "python") {
           setPythonCode(editorValue);
@@ -167,6 +170,11 @@ function App() {
           file={statementValidity}
           downloadName="StatementCategory.txt"
           anchorText="Download statement categories file"
+        />
+        <LinkComponent
+          file={symbolTable}
+          downloadName="symbolTable.txt"
+          anchorText="Download symbol table"
         />
         </Accordion>
         </div>}

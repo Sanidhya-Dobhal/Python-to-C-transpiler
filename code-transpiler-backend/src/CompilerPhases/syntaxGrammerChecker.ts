@@ -7,7 +7,7 @@ export function syntaxGrammarCheck(lines: string[]): string[] {
 
     if(words.length==1 && words[0]==='')
     {
-      results.push('Valid new line');
+      results.push('✅ New line');
     }
     else if (words[0] === "identifier" && words[1] === "Assign_op") {
       // Possible string assignment
@@ -17,7 +17,7 @@ export function syntaxGrammarCheck(lines: string[]): string[] {
         words[3] === "string_literal" &&
         words[4] === 'punctuation"'
       ) {
-        results.push("Valid string assignment");
+        results.push("✅ String assignment");
         flag = true;
       } else {
         // Check for numeric expression assignment
@@ -42,7 +42,7 @@ export function syntaxGrammarCheck(lines: string[]): string[] {
             }
           }
         }
-        results.push(flag ? "Valid numeric assignment" : `Invalid syntax`);
+        results.push(flag ? "✅ Numeric assignment" : `❌ Invalid syntax`);
       }
     } else if (words[0] === "print_func" && words[1] === "punctuation(") {
       let validPrint = false;
@@ -76,9 +76,9 @@ export function syntaxGrammarCheck(lines: string[]): string[] {
           break;
         }
       }
-      results.push(flag ? "Valid print statement" : `Invalid syntax`);
+      results.push(flag ? "✅ Print statement" : `❌ Invalid syntax`);
     } else {
-      results.push(`Invalid syntax`);
+      results.push(`❌ Invalid syntax`);
     }
   }
 
