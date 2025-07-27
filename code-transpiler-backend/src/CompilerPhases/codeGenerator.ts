@@ -120,6 +120,9 @@ function instructionGenerator(
     }
     outputLine += identifier + " = ";
     for (let tokenIndex in RHSTokens) {
+      if( RHSTokens[tokenIndex] ==="'")
+        outputLine += "\"";
+      else 
       outputLine += RHSTokens[tokenIndex];
     }
   } else if (statementType === "✅ Print statement") {

@@ -5,7 +5,6 @@ export function lexemeGenerator(
     //push the new lexeme and flush the variable
     if (lex.length > 0) {
       output.push(lex);
-      console.log(lex);
       lex = "";
       i = 0;
     }
@@ -23,15 +22,11 @@ export function lexemeGenerator(
       appendLex(); // Flush previous token
       output.push('"');
       index++;
-      let hasStringTerminated = false
       while (index < inputCode.length && inputCode[index] !== '"' && inputCode[index]!='\n') {
         lex += inputCode[index];
         index++;
       }
-      if(inputCode[index]==='"'){
-        hasStringTerminated = true;
-      }
-      else{
+      if(!(inputCode[index]==='"')) {
         return {error: "SyntaxError: Unterminated string detected in lexical analysis"}
       }
       output.push(lex);
@@ -39,7 +34,23 @@ export function lexemeGenerator(
       lex = "";
       output.push('"');
       //   index++;
-    } else if (isPunct(ch)) {
+    } else if(ch ==="'") {
+      appendLex(); // Flush previous token
+      output.push("'");
+      index++;
+      let hasStringTerminated = false;
+      while (index < inputCode.length && inputCode[index] !== "'" && inputCode[index]!='\n') {
+        lex += inputCode[index];
+        index++;
+      }
+      if(!(inputCode[index] === "'")) {
+        return {error: "SyntaxError: Unterminated string detected in lexical analysis"}
+      }
+      output.push(lex);
+      lex = "";
+      output.push("'");
+    } 
+    else if (isPunct(ch)) {
       appendLex();
       const nextCh = inputCode[index + 1] ?? "";
       if (["=", "!", "<", ">"].includes(ch)) {

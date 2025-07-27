@@ -54,7 +54,7 @@ export function commentRemover(sourceCode: string):string | {
             continue;
           }
           else{
-            return {error:'SyntaxError: unterminated triple-quoted string detected'}
+            return {error:'SyntaxError: unterminated triple-quoted string detected.(Looks like you have not closed your multi-lined comment)'}
           }
         } else {
           // it's just a single quote or something else, preserve it
