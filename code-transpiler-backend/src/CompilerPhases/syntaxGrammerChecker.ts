@@ -12,10 +12,10 @@ export function syntaxGrammarCheck(lines: string[]): string[] {
     else if (words[0] === "identifier" && words[1] === "Assign_op") {
       // Possible string assignment
       if (
-        words.length === 5 &&
-        words[2] === 'punctuation"' &&
-        words[3] === "string_literal" &&
-        words[4] === 'punctuation"'
+        words.length === 5 && 
+        ((words[2] === 'punctuation"' && words[3] === "string_literal" && words[4] ==='punctuation"')
+        ||
+        (words[2] === "punctuation'" && words[3] === "string_literal" && words[4] === "punctuation'"))
       ) {
         results.push("✅ String assignment");
         flag = true;

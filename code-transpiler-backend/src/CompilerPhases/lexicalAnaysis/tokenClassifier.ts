@@ -40,7 +40,8 @@ const python_keywords = [
 ];
 export function tokenClassifier(lexemeLines: string[][]): TokenInfo[][] {
   const result: TokenInfo[][] = [];
-  let make_string_flag = false;
+  let makeStringFlag = false;
+  let startingQuotes: ''|'"'|"'" = '';
 
   for (const line of lexemeLines) {
     const processedLine: TokenInfo[] = [];
@@ -49,10 +50,10 @@ export function tokenClassifier(lexemeLines: string[][]): TokenInfo[][] {
       let tokenType = "";
       const isKeyword = python_keywords.includes(token);
 
-      if (make_string_flag) {
-        if (token === '"') {
-          tokenType = 'punctuation"';
-          make_string_flag = false;
+      if (makeStringFlag) {
+        if (token === startingQuotes && startingQuotes!== '') {
+          tokenType = "punctuation" + token;
+          makeStringFlag = false;
         } else {
           tokenType = "string_literal";
         }
@@ -76,7 +77,13 @@ export function tokenClassifier(lexemeLines: string[][]): TokenInfo[][] {
             break;
           case '"':
             tokenType = 'punctuation"';
-            make_string_flag = true;
+            makeStringFlag = true;
+            startingQuotes = '"';
+            break;
+            case "'":
+            tokenType = "punctuation'";
+            makeStringFlag = true;
+            startingQuotes = "'";
             break;
           default:
             tokenType = "punctuation" + token;
