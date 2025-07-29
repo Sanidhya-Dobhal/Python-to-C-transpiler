@@ -159,7 +159,7 @@ function instructionGenerator(
           templateString+="%f ";
         }
       }
-      printArgumentsString += printContent[tokenIndexNumber];
+      printArgumentsString += printContent[tokenIndexNumber] ==="'" ? '"':printContent[tokenIndexNumber];
     }
   } else if(statementType ==="✅ New line"){
     return "\n";
