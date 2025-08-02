@@ -1,13 +1,18 @@
-# Python to C code convertor tool
-This tool validates the python source code and if the code has no errors, it it converted to C
+# 🛠️ Python to C Code Transpilation Tool
+This tool validates the python source code and, if the code has no errors, it is converted to an equivalent C code.
 
-🧩 **This repository is a monorepo** containing both frontend and backend code,  along with some test cases for validation and reliability.
+🧩 **This repository is a monorepo** which contains the following: 
+
+- [🖥️ Frontend (`code transpiler react app/`)](./code%20transpiler%20react%20app/)  
+- [⚙️ Backend (`code-transpiler-backend/`)](./code-transpiler-backend/)
+
+- [🧪 Test Cases (`Test cases/`)](./Test%20cases/)  
 ## 🚀 Live Demo
-[Python to C Transpiler](https://sanidhya-dobhal.github.io/Python-to-C-transpiler/)
+[**Python to C Transpiler**](https://sanidhya-dobhal.github.io/Python-to-C-transpiler/)
 ## ✨ Features supported
 ### 🔁 Transpilation Capabilities
 - ✅ Converts simple string assignments (e.g., `name = "John"`)
-- ✅ Translates numeric assignments and arithmetic operations (e.g., `a = 5 + 2`)
+- ✅ Supports numeric assignments and arithmetic operations (e.g., `a = 5 + 2`)
 - ✅ Supports `print()` statements with multiple arguments (e.g., `print("Sum is", result)`)
 ### 🧠 Syntactic Validation
 - ✅ Validates syntax correctness for supported Python statements before transpilation
@@ -26,20 +31,21 @@ Why test cases matter:
 
 - 🧰 Extensibility: The test cases serve as a useful base for anyone looking to extend the transpiler or enhance its accuracy.
 
-📌 Test scripts and sample inputs are organized in the ```Test cases/```
-Please refer to the contributing section for how to use them during development.
+📌 Test scripts and sample inputs are located in [`Test cases/`](./Test%20cases/).
 
-##  🧮 Logics
+Please refer to the [Contributing & Discussions](#-contributing--discussions) for how to use them during development.
+
+##  🧮 Transpilation Logics
 - ### Numeric assignments
-    - Numeric assignments are the ones with alternating variables or numerical literals and arithematic operators in the RHS. 
-    - Additionally the last token should not be arithematic operator
+    - Numeric assignments are the ones with alternating variables or numerical literals and arithmetic operators in the RHS. 
+    - Additionally the last token should not be arithmetic operator
 
 - ### String assignments 
     - Simple string assignments with enclosed in double quotes("") or single quotes('') are supported. 
     - The ```syntaxGrammerChecker``` strictly checks if a line of code (LOC) contains exactly 5 tokens and adheres to one of the following forms:
     <pre> <code>identifier = "string"</code> </pre>
     OR
-    <pre><code?>identifier = 'string'</code> </pre> </code></pre>
+    <pre><code>identifier = 'string'</code> </pre> </code></pre>
     <details><summary>Why are string assignments limited to these formats only ?</summary>
     This transpiler is intentionally designed for simple transpilations. In C, string manipulation—such as concatenation—requires using functions like strcat() from the string.h library. Implementing full support for all string assignment variations (e.g., dynamic concatenation) would significantly increase complexity. Hence, for now, only basic assignments are allowed to maintain reliability and clarity during transpilation.
 
@@ -48,9 +54,8 @@ Please refer to the contributing section for how to use them during development.
 
 ## 📦Technologies used 
 
- - __For frontend:__ <u>React.js with TypeScript</u>, Material UI component library, Monaco Code Editor
-
-- __For backend:__ Node.js and express.js
+- **Frontend:** React.js (with TypeScript), Material UI, Monaco Code Editor
+- **Backend:** Node.js, Express.js
 
 ## 🤝 Contributing & Discussions
 I welcome contributions to improve this project! 🚀

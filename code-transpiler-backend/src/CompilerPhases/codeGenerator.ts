@@ -79,7 +79,7 @@ function instructionGenerator(
             error:
               "Error: Identifier " +
               RHSTokens[i] +
-              " is used but never assigned",
+              " is used but never defined",
           };
         else {
           outputLine += RHSTokens[i];

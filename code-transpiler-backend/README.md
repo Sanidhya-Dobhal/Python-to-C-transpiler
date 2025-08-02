@@ -1,23 +1,33 @@
-# **Backend – Python to C Transpiler**
+#⚙️ **Backend – Python to C Transpiler**
 
-This is the backend service that powers the Python-to-C transpiler tool. It handles lexical analysis, syntax validation, and generates equivalent C code for supported Python statements.
+This backend powers the Python-to-C transpiler tool. It processes user-submitted Python code through a multi-phase compilation pipeline and returns the equivalent C code along with intermediate outputs like tokens and symbol tables, if the input is syntactically valid and supported. If the code contains unsupported syntax or errors, the backend returns appropriate errors.
+
+
 
 ## What It Does
 
-The backend performs a multi-phase compilation process:
+## 🧩 Compilation Phases
 
-1. **Comment Removal** – strips out all comments from Python code
-2. **Lexical Analysis** – breaks input into lexemes
-3. **Token Classification** – identifies token types (identifier, operator, etc.)
-4. **Syntax Grammar Check** – validates supported Python grammar
-5. **Symbol Table Construction** – stores variable names and types
-6. **Code Generation** – produces equivalent C code for valid input
+| Phase                  | Description                                                  |
+|------------------------|--------------------------------------------------------------|
+| Comment Removal        | Strips out all comments from the input source                |
+| Lexical Analysis       | Breaks the code into lexemes (minimal units of meaning)      |
+| Token Classification   | Categorizes each lexeme (identifier, keyword, operator, etc.)|
+| Syntax Grammar Check   | Validates that the code follows supported Python grammar     |
+| Symbol Table Generation| Records identifiers, datatypes, and their mappings           |
+| Code Generation        | Converts valid Python into equivalent C code                 |
+
+## Limitations
+* Control structures (`if`, `while`, `for`) are not yet supported
+* Focuses on simple numeric and string assignments
+* Only supports basic `print()` statements
+---
 
 ## API Endpoint
 
 ### `POST /api/transpile`
 
-**Payload:**
+**Request Payload:**
 ```json
 {
   "sourceCode": "x = 5\nprint(x)",
@@ -25,12 +35,26 @@ The backend performs a multi-phase compilation process:
   "targetLang": "c"
 }
 ```
+
+**Response Payload**
+```js
+res.json({
+    codeWithoutComments,
+    lexicalOutputString,
+    tokenListOutputString,
+    simplifiedTokenRepString,
+    statementValidityString,
+    symbolTableString,
+    finalCode: codeGenerationOutput.code,
+        })
+
+```
 ### Returns:
-* Transpiled C code
 * Lexical output
 * Token list
 * Syntax evaluation
 * Symbol table
+* Transpiled C code
 * Error messages (if any)
 ---
 ## Technologies used
@@ -38,18 +62,23 @@ The backend performs a multi-phase compilation process:
 * Express.js
 * TypeScript
 
-### Run Locally
+## 🚀 Local Development Setup
+Clone the entire repository and from the root directory run the following commands:
 ```bash
+cd code-transpiler-backend
 npm install
-npm start      # Runs on http://localhost:5000
+npm run dev      # Runs on http://localhost:5000
 ```
+
+> ⚠️ **Note:** To run the frontend along with this backend, please refer to the setup section in the [code transpiler react app](../code%20transpiler%20react%20app/) <br>
+Make sure to change the Axios API endpoint in App.tsx to match the server's URL (http://localhost:5000 by default).
 ---
 ## Directory Structure
 ```pgsql
 code-transpiler-backend/
 ├── src/
 │   ├── CompilerPhases/
-│   │   ├── lexicalAnaysis/
+│   │   ├── lexicalAnalysis/
 │   │   ├── syntaxGrammerChecker.ts
 │   │   ├── codeGenerator.ts
 │   ├── index.ts
@@ -58,13 +87,10 @@ code-transpiler-backend/
 └── tsconfig.json
 ```
 ---
-## Limitations
-* Control structures (`if`, `while`, `for`) are not yet supported
-* Focuses on simple numeric and string assignments
-* Only supports basic `print()` statements
----
+
 ## Developer Notes
-* You can test with files from the `Test cases/` folder
-* Update logic inside `CompilerPhases/` for grammar or lexeme rules
+* You can test with files from the [Test cases](../Test%20cases/) folder (highly recommended after making any changes)
+* Update core logic inside `CompilerPhases/` for grammar or lexeme rules
+* Certain adjustments may also be necessary in `index.ts`, especially if you're changing the structure of the response object
 * If modifying outputs, sync the frontend to reflect those changes
 ---

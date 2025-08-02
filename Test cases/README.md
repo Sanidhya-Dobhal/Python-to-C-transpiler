@@ -1,53 +1,76 @@
-# **Test Cases – Python to C Transpiler**
+# 🧪 **Test Cases – Python to C Transpiler**
 
-###### This directory contains Python code samples used to verify the correctness, reliability, and limitations of the transpilation process from Python to C.
+###### This directory contains Python code samples used to verify the correctness, reliability, and limitations of the transpilation process from Python to C using this tool
 ---
-## Purpose
+## 🎯 Purpose
 
 - Ensure supported syntax is correctly transpiled
-- Detect unsupported features and raise appropriate errors
-- Enable regression testing for contributors
+- Detect unsupported features and syntax errors and raise appropriate errors
+- Enable **regression testing** for contributors
 - Provide reusable examples for development and debugging
+
+> ⚠️ **Note for contributors:** Before pushing new changes, please ensure the test cases pass by checking their outputs using the [hosted application](https://sanidhya-dobhal.github.io/Python-to-C-transpiler/).
 ---
-## Folder Structure
+##  📁 Folder Structure
 ```
-est cases/
-├── DegreeToFarenheit.py # Valid: arithmetic + print
-├── stringAssignments.py # Valid: single & double quote strings
-├── Swapping_2_variables.py # Valid: variable reassignment
-├── testCaseInput1.py # Mixed types, repeated logic
-├── testCaseInput2.py # Edge case: empty print
-└── Error cases/
+Test cases/
+│
+├── Error-triggering cases/       # Contains syntactically incorrect or semantically invalid programs
+│   ├── invalidNumericExpression.py
+│   ├── undeclaredVariableUsage.py
+│   ├── unterminatedComment.py
+│   └── unterminatedString.py
+│
+├── Transpilable cases/          # Contains syntactically correct and valid programs
+│   ├── DegreeToFahrenheit.py
+│   ├── stringAssignments.py
+│   ├── Swapping_2_variables.py
+│   ├── testCaseInput1.py
+│   └── testCaseInput2.py
 ```
 ---
 
 ## Usage Instructions
 
-1. Start the **backend** (`npm start`) and **frontend** (`npm run dev`)
+1. Start the application (refer to frontend and backend READMEs for setup)
 2. Copy the contents of any test case into the frontend editor
 3. Check the output:
-   - **Tokens**, **symbol table**, and **final C code** should display for valid files
-   - **Errors** should be shown for unsupported/invalid cases
+
+   - ✅ Final C code will appear in the output editor if the test case is valid
+
+   - 📄 Supporting files (available for download on the right side of the UI) will include:
+
+      - Code without comments
+
+      - Lexeme list
+
+      - All tokens
+
+      - Token representation of the Python code
+
+      - Statement category file
+
+      - Symbol table
+
+   - ❌ Errors will be shown if the code includes unsupported features or invalid syntax
 ---
 ## Sample Test Categories
 
-### Valid Tests
+### Transpilable Test Cases
+ These are simple Python programs that the transpiler can successfully convert to C code. They typically test:
+
 - Simple numeric assignments
 - String assignments with `'` or `"`
 - Basic arithmetic expressions
-- Standard print statements
+- Standard print statements with multiple arguments
 
-### Invalid / Edge Case Ideas
+### Error-triggering Test Cases
+
+These are valid test cases designed to trigger specific errors in the transpiler, such as:
+
 - Unterminated strings or comments
 - Variables used before assignment
-- Unsupported syntax (`if`, `for`, `while`, etc.)
----
-## Contributing New Tests
+- Invalid Numeric assignments
 
-- Add new `.py` files for test cases
-- Use descriptive file names
-- Keep each test small and focused on one concept
-- For invalid cases, place them under `Error cases/` for clarity
 
 ---
-
