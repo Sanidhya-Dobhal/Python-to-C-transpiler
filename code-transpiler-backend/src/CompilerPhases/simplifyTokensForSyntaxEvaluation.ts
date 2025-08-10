@@ -8,7 +8,7 @@ export function simplifyTokensForSyntaxEvaluation(
     const simplifiedLine: string[] = [];
 
     for (const token of line) {
-        simplifiedLine.push(token.tokenType);
+        simplifiedLine.push(token.tokenType === 'punctuation' ? token.tokenType + token.lexeme : token.tokenType);
     }
 
     simplified.push(simplifiedLine.join(" "));

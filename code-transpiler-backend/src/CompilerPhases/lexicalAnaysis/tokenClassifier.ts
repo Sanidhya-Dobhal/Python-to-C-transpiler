@@ -52,7 +52,7 @@ export function tokenClassifier(lexemeLines: string[][]): TokenInfo[][] {
 
       if (makeStringFlag) {
         if (token === startingQuotes && startingQuotes!== '') {
-          tokenType = "punctuation" + token;
+          tokenType = "punctuation";
           makeStringFlag = false;
         } else {
           tokenType = "string_literal";
@@ -76,17 +76,17 @@ export function tokenClassifier(lexemeLines: string[][]): TokenInfo[][] {
             tokenType = "Assign_op";
             break;
           case '"':
-            tokenType = 'punctuation"';
+            tokenType = 'punctuation';
             makeStringFlag = true;
             startingQuotes = '"';
             break;
             case "'":
-            tokenType = "punctuation'";
+            tokenType = "punctuation";
             makeStringFlag = true;
             startingQuotes = "'";
             break;
           default:
-            tokenType = "punctuation" + token;
+            tokenType = "punctuation";
         }
       } else if (token.length === 2 && isPunctuation(token[0])) {
         if (["<=", ">=", "==", "!="].includes(token)) {
