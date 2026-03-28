@@ -188,6 +188,6 @@ function getVariableDetails(identifier: string,detail:"cVariable"|"datatype") {
       }
     }
   } else {
-    return { error: `Invalid variable: ${identifier}` };
+    return { error: `NameError: name '${identifier}' is not defined` };
   }
 }
